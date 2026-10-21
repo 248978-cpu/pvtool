@@ -1,25 +1,19 @@
 package Berekeningen
 
-import "time"
+import (
+	"pvtool/Model"
+	"time"
+)
 
-func totaal(kwartierwaarden []Kwartierwaarde, soort string) float64 {
-	var tot float64
-	for _, k := range kwartierwaarden {
-		if k.Soort == soort {
-			tot += k.Waarde
-		}
-	}
-	return tot
+func totaal(kwartierwaarden []Model.Kwartierwaarde, kolom int) float64 {
+	return 0
 }
 
-func maxKW(kwartierwaarden []Kwartierwaarde, soort string) float64 {
+func MaxAfname(kwartierwaarden []Model.Kwartierwaarde, soort string) float64 {
 	var max float64 = 0
 	for _, k := range kwartierwaarden {
-		if k.Soort != soort {
-			continue
-		}
-		if k.Waarde > max {
-			max = k.Waarde
+		if k.Afname > max {
+			max = k.Afname
 		}
 	}
 	return max
@@ -30,12 +24,12 @@ type MaandPiek struct {
 	Max      float64
 }
 
-func PiekenPerMaand(kwartierwaarden []Kwartierwaarde) [12]MaandPiek {
+func PiekenPerMaand(kwartierwaarden []Model.Kwartierwaarde) [12]MaandPiek {
 	var pieken [12]MaandPiek
 	for _, k := range kwartierwaarden {
 		m := k.Tijdstip.Month() - 1
-		if k.Waarde*4 > pieken[m].Max {
-			pieken[m] = MaandPiek{Tijdstip: k.Tijdstip, Max: k.Waarde * 4}
+		if k.Afname*4 > pieken[m].Max {
+			pieken[m] = MaandPiek{Tijdstip: k.Tijdstip, Max: k.Afname * 4}
 		}
 	}
 	return pieken

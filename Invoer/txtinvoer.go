@@ -33,11 +33,25 @@ func ParseTxt(tekst string) ([]float64, error) {
 	return waarden, nil
 }
 
-func WaardenInladen(start time.Time, waarden []float64) ([]Model.Kwartierwaarde, error) {
+func AfnameInladen(start time.Time, waarden []float64) ([]Model.Kwartierwaarde, error) {
 	kwartierwaarden := make([]Model.Kwartierwaarde, len(waarden))
 	for i, w := range waarden {
 		kwartierwaarden[i].Tijdstip = start.Add(time.Duration(i*15) * time.Minute)
 		kwartierwaarden[i].Afname = w
+	}
+	return kwartierwaarden, nil
+}
+
+func InjectieInladen(waarden []float64, kwartierwaarden []Model.Kwartierwaarde) ([]Model.Kwartierwaarde, error) {
+	for i, w := range waarden {
+		kwartierwaarden[i].Injectie = &w
+	}
+	return kwartierwaarden, nil
+}
+
+func ProductieInladen(waarden []float64, kwartierwaarden []Model.Kwartierwaarde) ([]Model.Kwartierwaarde, error) {
+	for i, w := range waarden {
+		kwartierwaarden[i].Productie = &w
 	}
 	return kwartierwaarden, nil
 }
