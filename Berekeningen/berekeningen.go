@@ -5,8 +5,38 @@ import (
 	"time"
 )
 
-func totaal(kwartierwaarden []Model.Kwartierwaarde, kolom int) float64 {
-	return 0
+func Totaal(kwartierwaarden []Model.Kwartierwaarde, kolom int) float64 {
+	var tot float64
+	for _, k := range kwartierwaarden {
+		switch kolom {
+		case 1:
+			tot += k.Afname
+		case 2:
+			tot += k.Injectie
+		case 3:
+			tot += k.Productie
+		}
+	}
+	return tot
+}
+
+func TotaalB(batterijsimulatie []Model.Batterijsimulatie, kolom int) float64 {
+	var tot float64
+	for _, b := range batterijsimulatie {
+		switch kolom {
+		case 1:
+			tot += b.Afname
+		case 2:
+			tot += b.Injectie
+		case 3:
+			tot += b.Productie
+		case 4:
+			tot += b.Opslag
+		case 5:
+			tot += b.Afslag
+		}
+	}
+	return tot
 }
 
 func MaxAfname(kwartierwaarden []Model.Kwartierwaarde, soort string) float64 {

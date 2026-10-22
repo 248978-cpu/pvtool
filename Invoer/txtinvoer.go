@@ -8,11 +8,6 @@ import (
 	"time"
 )
 
-const (
-	SoortAfname    = "afname"
-	SoortInjectie  = "injectie"
-	SoortProductie = "productie"
-)
 
 func ParseTxt(tekst string) ([]float64, error) {
 	tekst = strings.TrimRight(tekst, "\r\n")
@@ -23,7 +18,7 @@ func ParseTxt(tekst string) ([]float64, error) {
 			waarden = append(waarden, 0)
 			continue
 		}
-		rpk := strings.Replace(r, ",", ".", -1)
+		rpk := strings.ReplaceAll(r, ",", ".")
 		w, err := strconv.ParseFloat(rpk, 64)
 		if err != nil {
 			return nil, fmt.Errorf("regel %d kan niet geparsed worden: %w", i+1, err)
@@ -44,14 +39,14 @@ func AfnameInladen(start time.Time, waarden []float64) ([]Model.Kwartierwaarde, 
 
 func InjectieInladen(waarden []float64, kwartierwaarden []Model.Kwartierwaarde) ([]Model.Kwartierwaarde, error) {
 	for i, w := range waarden {
-		kwartierwaarden[i].Injectie = &w
+		kwartierwaarden[i].Injectie = w
 	}
 	return kwartierwaarden, nil
 }
 
 func ProductieInladen(waarden []float64, kwartierwaarden []Model.Kwartierwaarde) ([]Model.Kwartierwaarde, error) {
 	for i, w := range waarden {
-		kwartierwaarden[i].Productie = &w
+		kwartierwaarden[i].Productie = w
 	}
 	return kwartierwaarden, nil
 }
