@@ -5,31 +5,28 @@ import (
 	"os"
 	"pvtool/Berekeningen"
 	"pvtool/Invoer"
-	"time"
 	"pvtool/Simulatie"
 )
 
 func main() {
-	afnruw, _ := os.ReadFile(os.Args[1])
-	injruw, _ := os.ReadFile(os.Args[2])
-	afntekst := string(afnruw)
-	injtekst := string(injruw)
-
-	afname, err := Invoer.ParseTxt(afntekst)
-	if err != nil {
-		fmt.Println("leesfout:", err)
+	if len(os.Args) < 3 || len(os.Args) > 5 {
+		fmt.Println("gebruik: pvtool <tijdstip> <afname> [injectie] [productie]")
+		os.Exit(1)
 	}
 
-	start := time.Date(2025, time.January, 1, 0, 0, 0, 0, time.Local)
-	kwartierwaarden, err := Invoer.AfnameInladen(start, afname)
-	if err != nil {
-		fmt.Println("fout bij het inladen afname:", err)
+	injectiepad := ""
+	productiepad := ""
+	if len(os.Args) >= 4 {
+		injectiepad = os.Args[3]
+	}
+	if len(os.Args) >= 5 {
+		productiepad = os.Args[4]
 	}
 
-	injectie, err := Invoer.ParseTxt(injtekst)
-	kwartierwaarden, err = Invoer.InjectieInladen(injectie, kwartierwaarden)
+	kwartierwaarden, err := Invoer.DataInvoer(os.Args[1], os.Args[2], injectiepad, productiepad)
 	if err != nil {
-		fmt.Println("fout bij het inladen injectie:", err)
+		fmt.Print(err)
+		os.Exit(1)
 	}
 
 	afnameTot := Berekeningen.Totaal(kwartierwaarden, 1)
